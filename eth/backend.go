@@ -80,6 +80,7 @@ type Ethereum struct {
 	accountManager *accounts.Manager
 
 	bloomRequests chan chan *bloombits.Retrieval // Channel receiving bloom data retrieval requests
+	filterTasks   chan *filters.BlockFilterTask  // Channel receiving block filter tasks
 	bloomIndexer  *core.ChainIndexer             // Bloom indexer operating during block imports
 
 	ApiBackend *EthApiBackend
@@ -132,6 +133,7 @@ func New(ctx *node.ServiceContext, config *Config) (*Ethereum, error) {
 		gasPrice:       config.GasPrice,
 		etherbase:      config.Etherbase,
 		bloomRequests:  make(chan chan *bloombits.Retrieval),
+		filterTasks:    make(chan *filters.BlockFilterTask),
 		bloomIndexer:   NewBloomIndexer(chainDb, params.BloomBitsBlocks),
 	}
 

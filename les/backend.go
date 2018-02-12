@@ -65,6 +65,7 @@ type LightEthereum struct {
 	chainDb ethdb.Database // Block chain database
 
 	bloomRequests                              chan chan *bloombits.Retrieval // Channel receiving bloom data retrieval requests
+	filterTasks                                chan *filters.BlockFilterTask  // Channel receiving block filter tasks
 	bloomIndexer, chtIndexer, bloomTrieIndexer *core.ChainIndexer
 
 	ApiBackend *LesApiBackend
@@ -105,6 +106,7 @@ func New(ctx *node.ServiceContext, config *eth.Config) (*LightEthereum, error) {
 		shutdownChan:     make(chan bool),
 		networkId:        config.NetworkId,
 		bloomRequests:    make(chan chan *bloombits.Retrieval),
+		filterTasks:      make(chan *filters.BlockFilterTask),
 		bloomIndexer:     eth.NewBloomIndexer(chainDb, light.BloomTrieFrequency),
 		chtIndexer:       light.NewChtIndexer(chainDb, true),
 		bloomTrieIndexer: light.NewBloomTrieIndexer(chainDb, true),
