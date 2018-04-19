@@ -49,35 +49,35 @@ const (
 	HelperTrieProcessConfirmations = 256  // number of confirmations before a HelperTrie is generated
 )
 
-// trustedCheckpoint represents a set of post-processed trie roots (CHT and BloomTrie) associated with
+// TrustedCheckpoint represents a set of post-processed trie roots (CHT and BloomTrie) associated with
 // the appropriate section index and head hash. It is used to start light syncing from this checkpoint
 // and avoid downloading the entire header chain while still being able to securely access old headers/logs.
-type trustedCheckpoint struct {
-	name                                string
-	sectionIdx                          uint64
-	sectionHead, chtRoot, bloomTrieRoot common.Hash
+type TrustedCheckpoint struct {
+	name                            string
+	SectionIdx                      uint64
+	SectionHead, CHTRoot, BloomRoot common.Hash
 }
 
 var (
-	mainnetCheckpoint = trustedCheckpoint{
-		name:          "mainnet",
-		sectionIdx:    174,
-		sectionHead:   common.HexToHash("a3ef48cd8f1c3a08419f0237fc7763491fe89497b3144b17adf87c1c43664613"),
-		chtRoot:       common.HexToHash("dcbeed9f4dea1b3cb75601bb27c51b9960c28e5850275402ac49a150a667296e"),
-		bloomTrieRoot: common.HexToHash("6b7497a4a03e33870a2383cb6f5e70570f12b1bf5699063baf8c71d02ca90b02"),
+	mainnetCheckpoint = TrustedCheckpoint{
+		name:        "mainnet",
+		SectionIdx:  174,
+		SectionHead: common.HexToHash("a3ef48cd8f1c3a08419f0237fc7763491fe89497b3144b17adf87c1c43664613"),
+		CHTRoot:     common.HexToHash("dcbeed9f4dea1b3cb75601bb27c51b9960c28e5850275402ac49a150a667296e"),
+		BloomRoot:   common.HexToHash("6b7497a4a03e33870a2383cb6f5e70570f12b1bf5699063baf8c71d02ca90b02"),
 	}
 
-	ropstenCheckpoint = trustedCheckpoint{
-		name:          "ropsten",
-		sectionIdx:    102,
-		sectionHead:   common.HexToHash("9017ab08465cb2b2dee035ee5b817bbd7fa28e2c8d2cd903e0aed1cccb249e89"),
-		chtRoot:       common.HexToHash("f61c10a7a787a5ef15f0ae1ae6c13c64331e57e79d0466d2bd9b0c06833fe956"),
-		bloomTrieRoot: common.HexToHash("69f2ad19aa46d5213a90137b3d2c9bff8a7c9483f7170f0125096ff450c9a873"),
+	ropstenCheckpoint = TrustedCheckpoint{
+		name:        "ropsten",
+		SectionIdx:  102,
+		SectionHead: common.HexToHash("9017ab08465cb2b2dee035ee5b817bbd7fa28e2c8d2cd903e0aed1cccb249e89"),
+		CHTRoot:     common.HexToHash("f61c10a7a787a5ef15f0ae1ae6c13c64331e57e79d0466d2bd9b0c06833fe956"),
+		BloomRoot:   common.HexToHash("69f2ad19aa46d5213a90137b3d2c9bff8a7c9483f7170f0125096ff450c9a873"),
 	}
 )
 
 // trustedCheckpoints associates each known checkpoint with the genesis hash of the chain it belongs to
-var trustedCheckpoints = map[common.Hash]trustedCheckpoint{
+var trustedCheckpoints = map[common.Hash]TrustedCheckpoint{
 	params.MainnetGenesisHash: mainnetCheckpoint,
 	params.TestnetGenesisHash: ropstenCheckpoint,
 }
